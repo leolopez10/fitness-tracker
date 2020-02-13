@@ -30,8 +30,21 @@ module.exports = function(app) {
     //PUT route for new exercises added to workout
     app.put("/api/workouts/:id", function(req, res) {
         console.log(req.body);
+        //need to learn how to get object id using mongoose
+
     })
 
+    //GET workout data from a specific range
+    app.get("/api/workouts/range", function(req, res) {
+        db.Workout.find({})
+            .sort({ "day": 1 })
+            .then(dbWorkout => {
+                res.json(dbWorkout);
+            })
+            .catch(err => {
+                res.json(err);
+            })
+    });
 
 
 }
