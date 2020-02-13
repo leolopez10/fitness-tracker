@@ -1,5 +1,10 @@
 //Require model
 const db = require("../models");
+const mongoose = require("mongoose");
+
+var ObjectId = mongoose.Types.ObjectId;
+
+
 
 //Routes for API workout
 module.exports = function(app) {
@@ -31,6 +36,7 @@ module.exports = function(app) {
     app.put("/api/workouts/:id", function(req, res) {
         console.log(req.body);
         //need to learn how to get object id using mongoose
+        db.Workout.update({ _id: ObjectId(req.params.id) }, { $push: { exercises: req.body } })
 
     })
 
