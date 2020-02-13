@@ -4,6 +4,7 @@
     "description": "An fitness tracker application made with express, ,mongoDB, mongoose, and express.js",
     "main": "index.js",
     "scripts": {
+        "seed": "node seeders/seed.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "repository": {

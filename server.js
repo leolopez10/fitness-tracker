@@ -5,9 +5,12 @@ const logger = require("morgan");
 // Sets up port for server, either on Heroku or localhost:3000.
 const PORT = process.env.PORT || 3000;
 
-// This requires all of our models from the models folder.
-const db = require("./models");
 const app = express();
+
+// This requires all of our models and seeder.
+const db = require("./models");
+// const seeder = require("./seeders");
+
 
 app.use(logger("dev"));
 app.use(express.urlencoded({ extended: true }));
@@ -15,10 +18,14 @@ app.use(express.json());
 app.use(express.static("public"));
 
 // MongoDB_URI referenced in .env
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workoutDB", { useNewUrlParser: true });
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", { useNewUrlParser: true });
+
+//Create New exercises in the databasedb.Workout.create({})
+
+
 
 // Require the routes so the app knows what to load
-// require("./routes/api-routes.js")(app);
+require("./routes/api-routes.js")(app);
 require("./routes/html-routes.js")(app);
 
 // Start the server
