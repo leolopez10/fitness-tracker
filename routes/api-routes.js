@@ -2,7 +2,10 @@
 const db = require("../models");
 const mongoose = require("mongoose");
 
-var ObjectId = mongoose.Types.ObjectId;
+String.prototype.toObjectId = function() {
+    var ObjectId = (require('mongoose').Types.ObjectId);
+    return new ObjectId(this.toString());
+};
 
 
 
@@ -12,6 +15,8 @@ module.exports = function(app) {
     //GET route for all of the workouts
     app.get("/api/workouts", function(req, res) {
         db.Workout.find({})
+            // .populate("exercises")
+            .sort({ "day": 1 })
             .then(dbWorkout => {
                 res.json(dbWorkout);
             })
@@ -32,13 +37,19 @@ module.exports = function(app) {
             })
     });
 
+
     //PUT route for new exercises added to workout
     app.put("/api/workouts/:id", function(req, res) {
         console.log(req.body);
-        //need to learn how to get object id using mongoose
-        db.Workout.update({ _id: ObjectId(req.params.id) }, { $push: { exercises: req.body } })
-
-    })
+        db.Workout.update({
+                _id: req.params.id.toObjectId()
+            }, {
+                $push: { exercises: req.body }
+            })
+            .then(function(data) {
+                res.json(data);
+            })
+    });
 
     //GET workout data from a specific range
     app.get("/api/workouts/range", function(req, res) {
@@ -51,6 +62,4 @@ module.exports = function(app) {
                 res.json(err);
             })
     });
-
-
 }
